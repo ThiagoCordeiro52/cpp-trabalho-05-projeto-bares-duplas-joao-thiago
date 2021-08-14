@@ -1,3 +1,6 @@
+# Prerequisites
+*.d
+
 # Compiled Object files
 *.slo
 *.lo
@@ -8,10 +11,29 @@
 *.gch
 *.pch
 
+# Cmake stuff
+CMakeCache.txt
+build
+
+# VIM stuff
+.*.swp
+.*.swo
+# Swap
+[._]*.s[a-v][a-z]
+!*.svg  # comment out if you don't need vector files
+[._]*.sw[a-p]
+[._]s[a-rt-v][a-z]
+[._]ss[a-gi-z]
+[._]sw[a-p]
+
 # Compiled Dynamic libraries
 *.so
 *.dylib
 *.dll
+
+# Fortran module files
+*.mod
+*.smod
 
 # Compiled Static libraries
 *.lai
@@ -23,16 +45,23 @@
 *.exe
 *.out
 *.app
-bin/*
-bin/*.o
+**/build
+**/bin
 
-# Temporary files
-.*.swp
+# Folder view configuration files
+.DS_Store
+Desktop.ini
 
-# Extra files
-data/*
+# Thumbnail cache files
+._*
+Thumbs.db
 
-docs/html
-docs/latex
+# Files that might appear on external disks
+.Spotlight-V100
+.Trashes
 
-tags
+#Editors
+**/settings.json
+.vscode
+
+build
