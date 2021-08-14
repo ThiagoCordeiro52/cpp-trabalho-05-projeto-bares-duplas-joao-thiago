@@ -7,6 +7,10 @@ Parser::terminal_symbol_t  Parser::lexer( char c_ ) const {
     switch( c_ ) {
         case '+':  return terminal_symbol_t::TS_PLUS;
         case '-':  return terminal_symbol_t::TS_MINUS;
+        case '*':  return terminal_symbol_t::TS_MULTI;
+        case '/':  return terminal_symbol_t::TS_DIVISION;
+        case '%':  return terminal_symbol_t::TS_REST;
+        case '^':  return terminal_symbol_t::TS_EXPO;
         case ' ':  return terminal_symbol_t::TS_WS;
         case   9:  return terminal_symbol_t::TS_TAB;
         case '0':  return terminal_symbol_t::TS_ZERO;
@@ -105,9 +109,25 @@ bool Parser::expression( void ) {
             // Stores the "+" token in the list.
             m_tk_list.emplace_back( Token{ "+", Token::token_t::OPERATOR } );
         }
+        else if ( accept( Parser::terminal_symbol_t::TS_MULTI ) ) {
+            // Stores the "*" token in the list.
+            m_tk_list.emplace_back( Token{ "*", Token::token_t::OPERATOR } );
+        }
+        else if ( accept( Parser::terminal_symbol_t::TS_DIVISION ) ) {
+            // Stores the "/" token in the list.
+            m_tk_list.emplace_back( Token{ "/", Token::token_t::OPERATOR } );
+        }
+        else if ( accept( Parser::terminal_symbol_t::TS_REST ) ) {
+            // Stores the "%" token in the list.
+            m_tk_list.emplace_back( Token{ "%", Token::token_t::OPERATOR } );
+        }
+        else if ( accept( Parser::terminal_symbol_t::TS_EXPO ) ) {
+            // Stores the "^" token in the list.
+            m_tk_list.emplace_back( Token{ "^", Token::token_t::OPERATOR } );
+        }
         else break;
 
-        // After a '+' or '-' we expect a valid term, otherwise we have a missing term.
+        // After a operator we expect a valid term, otherwise we have a missing term.
         if ( not term() and m_result.type == ResultType::ILL_FORMED_INTEGER ) {
             // Make the error more specific.
             m_result.type = ResultType::MISSING_TERM;
