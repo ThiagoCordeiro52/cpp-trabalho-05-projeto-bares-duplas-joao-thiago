@@ -440,6 +440,11 @@ void Parser::calculate(void) {
             st.push(result);
         }
     }
+    // Case of one operand is passed.
+    if (st.size() == 1) {
+        result = st.top();
+        st.pop();
+    }
 
     std::cout << "Result: " << result << std::endl;
 }
