@@ -16,10 +16,10 @@ struct Token
     public:
         enum class token_t : int
         {
-            OPERAND = 0, //!< A type representing numbers.
-            OPERATOR,     //!< A type representing  "+", "-", "*", "/", "%", "^"
-            OPEN_PARENTHESIS,      //!< A type representing a "("
-            CLOSE_PARENTHESIS,     //!< A type representing ")"
+            OPERAND = 0,           //!< A type representing numbers.
+            OPERATOR,              //!< A type representing  "+", "-", "*", "/", "%", "^"
+            OPEN_PARENTHESES,      //!< A type representing a "("
+            CLOSE_PARENTHESES,     //!< A type representing ")"
         };
 
         std::string value; //!< The token value as a string.

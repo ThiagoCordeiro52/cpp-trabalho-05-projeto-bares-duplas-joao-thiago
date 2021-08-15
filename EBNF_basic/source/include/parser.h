@@ -45,7 +45,10 @@ class Parser
                     ILL_FORMED_INTEGER,
                     MISSING_TERM,
                     EXTRANEOUS_SYMBOL,
-                    INTEGER_OUT_OF_RANGE
+                    INTEGER_OUT_OF_RANGE,
+                    MISSING_CLOSING,
+                    DIVISION_BY_ZERO,
+                    OVERFLOW_ERROR
             };
 
             //=== Members (public).
@@ -88,20 +91,20 @@ class Parser
     private:
         /// Terminal symbols table
         enum class terminal_symbol_t{  // The symbols:-
-            TS_OPEN_PARENTHESIS, //<! code for "("
-            TS_CLOSE_PARENTHESIS, //<! code for ")">
-            TS_PLUS,	        //!< code for "+"
-            TS_MINUS,	        //!< code for "-"
-            TS_MULTI,	        //!< code for "*"
-            TS_DIVISION,	    //!< code for "/"
-            TS_REST,	        //!< code for "%"
-            TS_EXPO,	        //!< code for "^"
-            TS_ZERO,            //!< code for "0"
-            TS_NON_ZERO_DIGIT,  //!< code for digits, from "1" to "9"
-            TS_WS,              //!< code for a white-space
-            TS_TAB,             //!< code for tab
-            TS_EOS,             //!< code for "End Of String"
-            TS_INVALID	        //!< invalid token
+            TS_OPEN_PARENTHESES,  //!< code for "("
+            TS_CLOSE_PARENTHESES, //!< code for ")"
+            TS_PLUS,	          //!< code for "+"
+            TS_MINUS,	          //!< code for "-"
+            TS_MULTI,	          //!< code for "*"
+            TS_DIVISION,	      //!< code for "/"
+            TS_REST,	          //!< code for "%"
+            TS_EXPO,	          //!< code for "^"
+            TS_ZERO,              //!< code for "0"
+            TS_NON_ZERO_DIGIT,    //!< code for digits, from "1" to "9"
+            TS_WS,                //!< code for a white-space
+            TS_TAB,               //!< code for tab
+            TS_EOS,               //!< code for "End Of String"
+            TS_INVALID	          //!< invalid token
         };
 
         //==== Private members.
@@ -129,7 +132,6 @@ class Parser
         bool expression();
         bool term();
         bool integer();
-        bool parenthesis();
         bool natural_number();
         bool digit_excl_zero();
         bool digit();
