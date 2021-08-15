@@ -76,7 +76,7 @@ class Parser
         //! test
         void infixToPostfix(void);
         //! test. 
-        void calculate(void);
+        Parser::ResultType calculate(void);
 
         //==== Special methods
         /// Default constructor

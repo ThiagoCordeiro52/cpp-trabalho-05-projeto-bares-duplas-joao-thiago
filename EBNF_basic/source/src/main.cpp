@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <vector>
 
-#include "../include/parser.h"
+#include "../EBNF_basic/source/include/parser.h"
 
 /// List of expressions to evaluate and tokenize.
 std::vector<std::string> expressions = {
@@ -46,6 +46,15 @@ void print_error_msg( const Parser::ResultType & result, const std::string &str 
             break;
         case Parser::ResultType::INTEGER_OUT_OF_RANGE:
             std::cout << ">>> Integer constant out of range beginning at column (" << result.at_col << ")!\n";
+            break;
+        case Parser::ResultType::MISSING_CLOSING:
+            std::cout << ">>> Missing closing \")\" at column (" << result.at_col << ")!\n";
+            break;
+        case Parser::ResultType::DIVISION_BY_ZERO:
+            std::cout << ">>> Division by zero!\n";
+            break;
+        case Parser::ResultType::OVERFLOW_ERROR:
+            std::cout << ">>> Numeric overflow error!\n";
             break;
         default:
             std::cout << ">>> Unhandled error found!\n";
@@ -92,29 +101,33 @@ int main( void ) {
         // Se deu pau, imprimir a mensagem adequada.
         if ( result.type != Parser::ResultType::OK )
             print_error_msg( result, expr );
-        else
+        else {
             std::cout << ">>> Expression SUCCESSFULLY parsed!\n";
+            // [II] Recuperar a lista de tokens.
+            auto lista = my_parser.get_tokens();
+            std::cout << ">>> Tokens: { ";
+            std::copy( lista.begin(), lista.end(),
+                    std::ostream_iterator< Token >(std::cout, " ") );
+            std::cout << "}\n";
+            std::cout << std::endl;
 
-        // [II] Recuperar a lista de tokens.
-        auto lista = my_parser.get_tokens();
-        std::cout << ">>> Tokens: { ";
-        std::copy( lista.begin(), lista.end(),
-                std::ostream_iterator< Token >(std::cout, " ") );
-        std::cout << "}\n";
-        std::cout << std::endl;
+            my_parser.infixToPostfix();
 
-        my_parser.infixToPostfix();
+            // [II] Recuperar a lista de tokens.
+            auto lista2 = my_parser.get_tokens();
+            std::cout << ">>> Tokens: { ";
+            std::copy( lista2.begin(), lista2.end(),
+                    std::ostream_iterator< Token >(std::cout, " ") );
+            std::cout << "}\n";
+            std::cout << std::endl;
 
-        // [II] Recuperar a lista de tokens.
-        auto lista2 = my_parser.get_tokens();
-        std::cout << ">>> Tokens: { ";
-        std::copy( lista2.begin(), lista2.end(),
-                std::ostream_iterator< Token >(std::cout, " ") );
-        std::cout << "}\n";
-        std::cout << std::endl;
+            // [III] Calcular a expressão pos fixa.
+            auto result2 = my_parser.calculate();
+            if ( result2.type != Parser::ResultType::OK )
+                print_error_msg( result2, expr );
+        }
 
-        // [III] Calcular a expressão pos fixa.
-        my_parser.calculate();
+        
     }
     // std::cout << "Valor pegue no cin: " << expr << std::endl;
 

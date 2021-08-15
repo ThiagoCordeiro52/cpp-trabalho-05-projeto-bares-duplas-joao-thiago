@@ -196,7 +196,7 @@ bool Parser::term( void ) {
         }
         // After a "(" we expect a valid expression, otherwise we have a missing expression.
         else {
-            m_result = ResultType{ ResultType::UNEXPECTED_END_OF_EXPRESSION, token_location() };
+            m_result = ResultType{ ResultType::ILL_FORMED_INTEGER, token_location() };
         }
     }
     else {
@@ -285,7 +285,7 @@ bool Parser::digit( void ) {
  *
  * @see ResultType
  */
-Parser::ResultType  Parser::parse_and_tokenize( std::string e_ ) {
+Parser::ResultType Parser::parse_and_tokenize( std::string e_ ) {
     m_expr = e_; //  Stores the input expression in the private class member.
     m_it_curr_symb = m_expr.begin(); // Defines the first char to be processed (consumed).
     m_begin_token = m_it_curr_symb;
@@ -411,9 +411,9 @@ void Parser::infixToPostfix(void) {
 }
 
 // Function that calculates the postfix expression
-void Parser::calculate(void) {
+Parser::ResultType Parser::calculate(void) {
     std::stack<input_int_type> st; // The stack to store the operands.
-    input_int_type result; // The result of expression;
+    input_int_type result{0}; // The result of expression;
 
     // Travels the tokens to calculate the expression.
     for (size_t i{0}; i < m_tk_list.size(); i++) {
@@ -440,26 +440,32 @@ void Parser::calculate(void) {
             st.pop();
             input_int_type first_operand = st.top();
             st.pop();
-            // Decide the operation that will be made.
-            switch (c_value[0]) {
-                case '+':  result = first_operand + second_operand; break;
-                case '-':  result = first_operand - second_operand; break;
-                case '*':  result = first_operand * second_operand; break;
-                case '/':  result = first_operand / second_operand; break;
-                case '%':  result = first_operand % second_operand; break;
-                case '^':
-                    // Calculate the exception of x^0 = 1
-                    if (second_operand == 0) {
-                        result = 1;
-                    }
-                    else {
-                        input_int_type expo = first_operand;
-                        while (second_operand != 1) {
-                            expo *= first_operand;
-                            second_operand--;
+            // To avoid special cases of operations with 0.
+            if ( second_operand == 0 and (c_value[0] == '/' or c_value[0] == '%') ) {
+                m_result = ResultType{ ResultType::DIVISION_BY_ZERO };
+            }
+            else {
+                // Decide the operation that will be made.
+                switch (c_value[0]) {
+                    case '+':  result = first_operand + second_operand; break;
+                    case '-':  result = first_operand - second_operand; break;
+                    case '*':  result = first_operand * second_operand; break;
+                    case '/':  result = first_operand / second_operand; break;
+                    case '%':  result = first_operand % second_operand; break;
+                    case '^':
+                        // Calculate the exception of x^0 = 1
+                        if (second_operand == 0) {
+                            result = 1;
                         }
-                        result = expo;
-                    }
+                        else {
+                            input_int_type expo = first_operand;
+                            while (second_operand != 1) {
+                                expo *= first_operand;
+                                second_operand--;
+                            }
+                            result = expo;
+                        }
+                }
             }
             // Insert the result on the top of stack.
             st.push(result);
@@ -470,8 +476,20 @@ void Parser::calculate(void) {
         result = st.top();
         st.pop();
     }
+    
+    required_int_type final_result{0};
+    // We calculate the result, just know if it is within the range (overflow occurred).
+    if ( result < std::numeric_limits< required_int_type >::min() or
+         result > std::numeric_limits< required_int_type >::max() ) {
+        // Overflow occurred, report error.
+        m_result = ResultType{ ResultType::OVERFLOW_ERROR };
+    }
+    else {
+        final_result = result;
+    }
+    std::cout << "Result: " << final_result << std::endl;
 
-    std::cout << "Result: " << result << std::endl;
+    return m_result;
 }
 
 //==========================[ End of parse.cpp ]==========================//
