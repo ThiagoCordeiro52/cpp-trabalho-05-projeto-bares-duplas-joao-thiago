@@ -1,4 +1,4 @@
-#include "parser.h"
+#include "../include/parser.h"
 #include <iterator>
 #include <algorithm>
 
@@ -27,7 +27,6 @@ Parser::terminal_symbol_t  Parser::lexer( char c_ ) const {
     }
     return terminal_symbol_t::TS_INVALID;
 }
-
 
 /// Consumes a valid character from the input expression.
 void Parser::next_symbol( void ) {

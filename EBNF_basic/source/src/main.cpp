@@ -2,7 +2,7 @@
 #include <iomanip>
 #include <vector>
 
-#include "parser.h"
+#include "../include/parser.h"
 
 /// List of expressions to evaluate and tokenize.
 std::vector<std::string> expressions = {
@@ -55,30 +55,53 @@ void print_error_msg( const Parser::ResultType & result, const std::string &str 
     std::cout << " " << error_indicator << std::endl;
 }
 
-
 int main( void ) {
     Parser my_parser; // Instancia um parser.
-    // Tentar analisar cada expressão da lista.
-    for( const auto & expr : expressions ) {
-        // [I] Fazer o parsing desta expressão.
-        auto result = my_parser.parse_and_tokenize( expr );
-        // Preparar cabeçalho da saida.
-        std::cout << std::setfill('=') << std::setw(80) << "\n";
-        std::cout << std::setfill(' ') << ">>> Parsing \"" << expr << "\"\n";
-        // Se deu pau, imprimir a mensagem adequada.
-        if ( result.type != Parser::ResultType::OK )
-            print_error_msg( result, expr );
-        else
-            std::cout << ">>> Expression SUCCESSFULLY parsed!\n";
+    
+    // // Tentar analisar cada expressão da lista.
+    // for( const auto & expr : expressions ) {
+    //     // [I] Fazer o parsing desta expressão.
+    //     auto result = my_parser.parse_and_tokenize( expr );
+    //     // Preparar cabeçalho da saida.
+    //     std::cout << std::setfill('=') << std::setw(80) << "\n";
+    //     std::cout << std::setfill(' ') << ">>> Parsing \"" << expr << "\"\n";
+    //     // Se deu pau, imprimir a mensagem adequada.
+    //     if ( result.type != Parser::ResultType::OK )
+    //         print_error_msg( result, expr );
+    //     else
+    //         std::cout << ">>> Expression SUCCESSFULLY parsed!\n";
 
-         // [II] Recuperar a lista de tokens.
-        auto lista = my_parser.get_tokens();
-        std::cout << ">>> Tokens: { ";
-        std::copy( lista.begin(), lista.end(),
-                std::ostream_iterator< Token >(std::cout, " ") );
-        std::cout << "}\n";
-        std::cout << std::endl;
-    }
+    //     // [II] Recuperar a lista de tokens.
+    //     auto lista = my_parser.get_tokens();
+    //     std::cout << ">>> Tokens: { ";
+    //     std::copy( lista.begin(), lista.end(),
+    //             std::ostream_iterator< Token >(std::cout, " ") );
+    //     std::cout << "}\n";
+    //     std::cout << std::endl;
+    // }
+
+    std::string expr;
+    std::cout << "Digite a expressão: ";
+    std::cin >> expr;
+
+    // [I] Fazer o parsing desta expressão.
+    auto result = my_parser.parse_and_tokenize( expr );
+    // Preparar cabeçalho da saida.
+    std::cout << std::setfill('=') << std::setw(80) << "\n";
+    std::cout << std::setfill(' ') << ">>> Parsing \"" << expr << "\"\n";
+    // Se deu pau, imprimir a mensagem adequada.
+    if ( result.type != Parser::ResultType::OK )
+        print_error_msg( result, expr );
+    else
+        std::cout << ">>> Expression SUCCESSFULLY parsed!\n";
+
+    // [II] Recuperar a lista de tokens.
+    auto lista = my_parser.get_tokens();
+    std::cout << ">>> Tokens: { ";
+    std::copy( lista.begin(), lista.end(),
+            std::ostream_iterator< Token >(std::cout, " ") );
+    std::cout << "}\n";
+    std::cout << std::endl;
 
     std::cout << "\n>>> Normal exiting...\n";
 
