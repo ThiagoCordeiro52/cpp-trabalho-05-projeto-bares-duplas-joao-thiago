@@ -103,6 +103,19 @@ int main( void ) {
     std::cout << "}\n";
     std::cout << std::endl;
 
+    my_parser.infixToPostfix();
+
+    // [II] Recuperar a lista de tokens.
+    auto lista2 = my_parser.get_tokens();
+    std::cout << ">>> Tokens: { ";
+    std::copy( lista2.begin(), lista2.end(),
+            std::ostream_iterator< Token >(std::cout, " ") );
+    std::cout << "}\n";
+    std::cout << std::endl;
+
+    // [III] Calcular a expressão pos fixa.
+    my_parser.calculate();
+
     std::cout << "\n>>> Normal exiting...\n";
 
     return EXIT_SUCCESS;
