@@ -22,7 +22,7 @@ struct Stack
 {
 	T A[MAX]; // Maximum size of Stack
 
-	Stack() { top = -1; }
+	Stack() { top_idx = -1; }
 
 	/**
 	 * @brief Adds an item in the stack. If the stack is full, then it is said 
@@ -33,13 +33,13 @@ struct Stack
 	 */
 	bool push(T element)
 	{
-		if (top >= (MAX - 1)) {
-			cout << "Stack Overflow";
+		if (top_idx >= (MAX - 1)) {
+			std::cout << "Stack Overflow";
 			return false;
 		}
 		else {
-			A[++top] = element;
-			cout << element << " pushed into stack\n";
+			A[++top_idx] = element;
+			std::cout << element << " pushed into stack\n";
 			return true;
 		}
 	};
@@ -52,12 +52,12 @@ struct Stack
 	 */
 	T pop()
 	{
-		if (top < 0) {
-			cout << "Stack Underflow";
+		if (top_idx < 0) {
+			std::cout << "Stack Underflow";
 			return 0;
 		}
 		else {
-			T element = A[top--];
+			T element = A[top_idx--];
 			return element;
 		}
 	};
@@ -66,14 +66,14 @@ struct Stack
 	 * @brief Get the top element of the stack.
 	 * @return T Returns top element of stack.
 	 */
-	T peek()
+	T top()
 	{
-		if (top < 0) {
-			cout << "Stack is Empty";
+		if (top_idx < 0) {
+			std::cout << "Stack is Empty";
 			return 0;
 		}
 		else {
-			T element = A[top];
+			T element = A[top_idx];
 			return element;
 		}
 	};
@@ -83,13 +83,13 @@ struct Stack
 	 * @return true Returns true if stack is empty.
 	 * @return false otherwise.
 	 */
-	bool isEmpty()
+	bool empty()
 	{
-		return (top < 0);
+		return (top_idx < 0);
 	};
 
 	private:
-		T top; // The element on the top of the stack.
+		size_t top_idx; // The index of the element on the top of the stack. 
 };
 
 #endif
