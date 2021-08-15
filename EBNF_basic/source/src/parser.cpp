@@ -9,6 +9,8 @@
 /// Converts the input character c_ into its corresponding terminal symbol code.
 Parser::terminal_symbol_t  Parser::lexer( char c_ ) const {
     switch( c_ ) {
+        case '(':  return terminal_symbol_t::TS_OPEN_PARENTHESIS;
+        case ')':  return terminal_symbol_t::TS_CLOSE_PARENTHESIS;
         case '+':  return terminal_symbol_t::TS_PLUS;
         case '-':  return terminal_symbol_t::TS_MINUS;
         case '*':  return terminal_symbol_t::TS_MULTI;
@@ -128,6 +130,14 @@ bool Parser::expression( void ) {
             // Stores the "^" token in the list.
             m_tk_list.emplace_back( Token{ "^", Token::token_t::OPERATOR } );
         }
+        else if ( accept( Parser::terminal_symbol_t::TS_OPEN_PARENTHESIS ) ) {
+            // Stores the "(" token in the list.
+            m_tk_list.emplace_back( Token{ "(", Token::token_t::OPEN_PARENTHESIS } );
+        }
+        else if ( accept( Parser::terminal_symbol_t::TS_CLOSE_PARENTHESIS ) ) {
+            // Stores the "(" token in the list.
+            m_tk_list.emplace_back( Token{ ")", Token::token_t::CLOSE_PARENTHESIS } );
+        }
         else break;
 
         // After a operator we expect a valid term, otherwise we have a missing term.
@@ -174,6 +184,19 @@ bool Parser::term( void ) {
             m_tk_list.emplace_back( Token{ token, Token::token_t::OPERAND } );
         }
     }
+    else if ( parenthesis() ) {
+        // Copiar a substring correspondente para uma variável string.
+        std::string token  = complete_token();
+        // Tentar realizar a conversão de string para inteiro (usar stoll()).
+        input_int_type token_value;
+        token_value = stoll( token );
+        if (*m_it_curr_symb == '(') {
+            m_tk_list.emplace_back( Token{ token, Token::token_t::OPEN_PARENTHESIS } );
+        } else if (*m_it_curr_symb == ')') {
+            m_tk_list.emplace_back( Token{ token, Token::token_t::CLOSE_PARENTHESIS } );
+        }
+        
+    }
     else {
         // Create the corresponding error.
         m_result =  ResultType{ ResultType::ILL_FORMED_INTEGER, std::distance( m_expr.begin(), m_it_curr_symb ) } ;
@@ -200,6 +223,15 @@ bool Parser::integer( void ) {
     accept( terminal_symbol_t::TS_MINUS );
     // Retonar o resultado da tentativa de validar um numero natural.
     return  natural_number();
+}
+
+bool Parser::parenthesis ( void ) {
+    if (accept( terminal_symbol_t::TS_OPEN_PARENTHESIS ) || accept( terminal_symbol_t::TS_CLOSE_PARENTHESIS)) {
+        return true;
+    }
+    else {
+        return false;
+    }
 }
 
 /// Validates (i.e. returns true or false) and consumes a **natural number** from the input string.
@@ -407,6 +439,49 @@ void Parser::calculate(void) {
             // transform in int and push on the stack.
             input_int_type value = std::atoll(c_value);
             st.push(value);
+        }
+        else if(c.type == Token::token_t::OPEN_PARENTHESIS) {
+            st.pop();
+            while(c.type == Token::token_t::CLOSE_PARENTHESIS) {
+                input_int_type second_operand = st.top();
+                st.pop();
+                input_int_type first_operand = st.top();
+                st.pop();
+                // Decide the operation that will be made.
+                switch (c_value[0]) {
+                    case '+':  result = first_operand + second_operand; break;
+                    case '-':  result = first_operand - second_operand; break;
+                    case '*':  result = first_operand * second_operand; break;
+                    case '/':  result = first_operand / second_operand; break;
+                    case '%':  result = first_operand % second_operand; break;
+                    case '^':
+                        // Calculate the exception of x^0 = 1
+                        if (second_operand == 0) {
+                            result = 1;
+                        }
+                        else {
+                            input_int_type expo = first_operand;
+                            while (second_operand != 1) {
+                                expo *= first_operand;
+                                second_operand--;
+                            }
+                            result = expo;
+                        }
+                }
+                // Insert the result on the top of stack.
+                st.push(result);
+                i++;
+                Token c = m_tk_list[i];
+                // transform std::string to char[]
+                // to use atoll and switch
+                size_t sz = c.value.length();
+                // declaring character array
+                char c_value[sz + 1];
+                // copying the contents of the
+                // string to char array
+                std::strcpy(c_value, c.value.c_str());
+            }
+            st.pop();
         }
         // If it is an operator, pop twice on stack and calculate the expression.
         else {

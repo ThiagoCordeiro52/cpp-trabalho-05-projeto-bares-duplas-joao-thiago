@@ -88,6 +88,8 @@ class Parser
     private:
         /// Terminal symbols table
         enum class terminal_symbol_t{  // The symbols:-
+            TS_OPEN_PARENTHESIS, //<! code for "("
+            TS_CLOSE_PARENTHESIS, //<! code for ")">
             TS_PLUS,	        //!< code for "+"
             TS_MINUS,	        //!< code for "-"
             TS_MULTI,	        //!< code for "*"
@@ -127,6 +129,7 @@ class Parser
         bool expression();
         bool term();
         bool integer();
+        bool parenthesis();
         bool natural_number();
         bool digit_excl_zero();
         bool digit();
