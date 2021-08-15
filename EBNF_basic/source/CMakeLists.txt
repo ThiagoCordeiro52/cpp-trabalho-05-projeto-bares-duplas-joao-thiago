@@ -6,9 +6,10 @@ set( GCC_COMPILE_FLAGS "-Wall -pedantic" )
 set( APP_NAME "tinyexp" )
 
 #=== MAIN APP ===
-include_directories( "core" )
+include_directories("src"
+                    "lib"
+                    "include")
 add_executable(bares
-               "core/main.cpp"
-               "core/parser.cpp")
-               
+               "src/main.cpp"
+               "src/parser.cpp")
 target_compile_features( bares PUBLIC cxx_std_17 )
