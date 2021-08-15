@@ -68,6 +68,12 @@ class Parser
         ResultType parse_and_tokenize( std::string e_ );
         /// Retrieves the list of tokens created during the partins process.
         std::vector< Token > get_tokens( void ) const;
+        //! test
+        int prec(std::string c);
+        //! test
+        void infixToPostfix(void);
+        //! test. 
+        void calculate(void);
 
         //==== Special methods
         /// Default constructor
@@ -100,13 +106,13 @@ class Parser
         std::string m_expr;                     //!< The source expression to be parsed
         std::string::iterator m_it_curr_symb;   //!< Pointer to the current char inside the expression.
         std::string::iterator m_begin_token;    //!< Pointer to the beginning of the current candidate token.
-        std::vector< Token > m_tk_list;         //!< Resulting list of tokens extracted from the expression.
+        std::vector<Token> m_tk_list;           //!< Resulting list of tokens extracted from the expression.
         ResultType m_result;                    //!< The result for the current expression (either error of OK).
 
         //=== Support parser methods.
         void begin_token();                     //!< Begins the process of token formation, keeping track of the first character that makes up the token inside the input string.
         std::string complete_token();           //!< Ends the token formation, creating and returning the substring that started when we called begin_token().
-        Parser::ResultType::size_type  token_location();  //!< Returns the beginning of the token location inside the input string.
+        Parser::ResultType::size_type token_location();  //!< Returns the beginning of the token location inside the input string.
 
         //=== Support parser methods.
         terminal_symbol_t lexer( char c_ ) const;// Get the corresponding code for a given input char.
