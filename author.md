@@ -4,6 +4,15 @@
 - Email: joguicosta@hotmail.com - thiagoty52@gmail.com
 - Turma: DIM0120 - T01
 
+# TODO dos autores
+
+- [ ] Implementar os parênteses
+- [ ] Tratar erros
+- [ ] Modelar uma classe (BaresManager?)
+- [ ] Documentação
+- [ ] Implementar itens extras (pilha, filha, vector...)
+- [ ] Colocar exemplo de teste do pdf no data/
+
 # Indique quais itens da avaliação foram realizados
 
 - [ ] Lê expressões do `std::cin` e cria corretamente a lista de tokens (20 pontos)
