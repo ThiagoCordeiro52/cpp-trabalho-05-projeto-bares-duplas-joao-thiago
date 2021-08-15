@@ -17,7 +17,7 @@ struct Token
         enum class token_t : int
         {
             OPERAND = 0, //!< A type representing numbers.
-            OPERATOR     //!< A type representing  "+", "-".
+            OPERATOR     //!< A type representing  "+", "-", "*", "/", "%", "^"
         };
 
         std::string value; //!< The token value as a string.
