@@ -130,14 +130,6 @@ bool Parser::expression( void ) {
             // Stores the "^" token in the list.
             m_tk_list.emplace_back( Token{ "^", Token::token_t::OPERATOR } );
         }
-        else if ( accept( Parser::terminal_symbol_t::TS_OPEN_PARENTHESIS ) ) {
-            // Stores the "(" token in the list.
-            m_tk_list.emplace_back( Token{ "(", Token::token_t::OPEN_PARENTHESIS } );
-        }
-        else if ( accept( Parser::terminal_symbol_t::TS_CLOSE_PARENTHESIS ) ) {
-            // Stores the "(" token in the list.
-            m_tk_list.emplace_back( Token{ ")", Token::token_t::CLOSE_PARENTHESIS } );
-        }
         else break;
 
         // After a operator we expect a valid term, otherwise we have a missing term.
@@ -184,16 +176,16 @@ bool Parser::term( void ) {
             m_tk_list.emplace_back( Token{ token, Token::token_t::OPERAND } );
         }
     }
-    else if ( parenthesis() ) {
+    else if ( *m_it_curr_symb == ')' or *m_it_curr_symb == ')' ) {
         // Copiar a substring correspondente para uma variável string.
-        std::string token  = complete_token();
-        // Tentar realizar a conversão de string para inteiro (usar stoll()).
-        input_int_type token_value;
-        token_value = stoll( token );
+        // std::string token  = complete_token();
+        // // Tentar realizar a conversão de string para inteiro (usar stoll()).
+        // input_int_type token_value;
+        // token_value = stoll( token );
         if (*m_it_curr_symb == '(') {
-            m_tk_list.emplace_back( Token{ token, Token::token_t::OPEN_PARENTHESIS } );
+            m_tk_list.emplace_back( Token{ "(", Token::token_t::OPEN_PARENTHESIS } );
         } else if (*m_it_curr_symb == ')') {
-            m_tk_list.emplace_back( Token{ token, Token::token_t::CLOSE_PARENTHESIS } );
+            m_tk_list.emplace_back( Token{  ")", Token::token_t::CLOSE_PARENTHESIS } );
         }
         
     }
@@ -223,15 +215,6 @@ bool Parser::integer( void ) {
     accept( terminal_symbol_t::TS_MINUS );
     // Retonar o resultado da tentativa de validar um numero natural.
     return  natural_number();
-}
-
-bool Parser::parenthesis ( void ) {
-    if (accept( terminal_symbol_t::TS_OPEN_PARENTHESIS ) || accept( terminal_symbol_t::TS_CLOSE_PARENTHESIS)) {
-        return true;
-    }
-    else {
-        return false;
-    }
 }
 
 /// Validates (i.e. returns true or false) and consumes a **natural number** from the input string.
@@ -440,9 +423,9 @@ void Parser::calculate(void) {
             input_int_type value = std::atoll(c_value);
             st.push(value);
         }
-        else if(c.type == Token::token_t::OPEN_PARENTHESIS) {
+        else if(c.type == Token::token_t::CLOSE_PARENTHESIS) {
             st.pop();
-            while(c.type == Token::token_t::CLOSE_PARENTHESIS) {
+            while(c.type == Token::token_t::OPEN_PARENTHESIS) {
                 input_int_type second_operand = st.top();
                 st.pop();
                 input_int_type first_operand = st.top();
