@@ -6,10 +6,10 @@
 #include <memory>   // std::unique_ptr
 #include <iterator> // std::advance, std::begin(), std::end(), std::ostream_iterator
 
-#define MAX 1000
-
+/// Sequence stack container namespace.
 namespace sta {
 
+   /// Implements tha infrastrcture to support a bidirectional iterator.
    template < class T >
     class MyForwardIterator : public std::iterator<std::bidirectional_iterator_tag, T>
     {
@@ -102,50 +102,42 @@ class stack
             using iterator = MyForwardIterator< value_type >; //!< The iterator, instantiated from a template class.
             using const_iterator = MyForwardIterator< const value_type >; //!< The const_iterator, instantiated from a template class.
 
-
 	public:
-		// explicit stack(size_type value = 0)
-    //   : m_end {value},
-    //     m_capacity {value},
-    //     m_storage {new T[value]} {
-    // };
-
-	stack(void)
+	stack(void) // constructor.
       : m_end {0},
         m_capacity {0},
         m_storage {new T[0]} {
     };
-
 
 	/**
 	 * @brief Adds an item in the stack. If the stack is full, then it is said 
 	 * to be an Overflow condition.
 	 * @param element the element that will be add on the stack.
 	 * @return true if pushed successfully.
-	 * @return false otherwise.
 	 */
 	bool push(T element)
 	{
-    // Verificar se ha espaco para novo elemento.
-    if (m_end >= m_capacity) {
-      if (m_capacity == 0) m_capacity++;
-      else m_capacity *= 2;
-    	std::unique_ptr<T[]> new_storage {new T[m_capacity]};
-      // Copies values of the vector to the new storage
-      std::copy(begin(), end(), new_storage.get());
+        // Check if there is space for new element.
+        if (m_end >= m_capacity) {
+            if (m_capacity == 0) m_capacity++;
+            else m_capacity *= 2;
+            // Allocates a new space
+            std::unique_ptr<T[]> new_storage {new T[m_capacity]};
+            // Copies values of the stack to the new storage
+            std::copy(begin(), end(), new_storage.get());
 
-      m_storage = std::move(new_storage);
-    }
-    // Realizar a insercao de fato.
-  	m_storage[m_end] = element;
-    m_end++;
-    return true;
+            m_storage = std::move(new_storage);
+        }
+        // Insert the element.
+        m_storage[m_end] = element;
+        m_end++;
+        return true;
 	};
 	
 	/**
 	 * @brief Removes an item from the stack. The items are popped in the
 	 * reversed order in which they are pushed. If the stack is empty,
-	 * then it is said to be an Underflow condition.
+	 * then it is return an error. 
 	 * @return T the element that was removed from the stack.
 	 */
 	T pop(void)
@@ -187,25 +179,23 @@ class stack
   }
 
 	private:
-		size_type m_end;                //!< The list's current size (or index past-last valid element).
-  	size_type m_capacity;           //!< The list's storage capacity.
-  	std::unique_ptr<T[]> m_storage; //!< The list's data storage area.
-		size_t top_idx; // The index of the element on the top of the stack. 
-
+	    size_type m_end;                //!< The list's current size (or index past-last valid element).
+  	    size_type m_capacity;           //!< The list's storage capacity.
+  	    std::unique_ptr<T[]> m_storage; //!< The list's data storage area.
 		
-            //=== [II] ITERATORS
-            /**
-             * @return an iterator to the begin of the vector
-             */
-            iterator begin( void ) {
-                return iterator{m_storage.get()};
-            };
-            /**
-             * @return an iterator to the position after the end of the vector
-             */
-            iterator end( void ) {
-                return iterator{m_storage.get() + m_end};
-            };
+        //=== [II] ITERATORS
+        /**
+        * @return an iterator to the begin of the stack
+        */
+        iterator begin( void ) {
+            return iterator{m_storage.get()};
+        };
+        /**
+        * @return an iterator to the position after the end of the stack
+        */
+        iterator end( void ) {
+            return iterator{m_storage.get() + m_end};
+        };
 };
 }
 
