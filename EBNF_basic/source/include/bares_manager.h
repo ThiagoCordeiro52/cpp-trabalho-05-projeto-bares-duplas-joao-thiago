@@ -39,7 +39,7 @@ class BaresManager {
         
     private:
         Parser::ResultType status; //!< The status of the program, if has an error or no.
-        std::vector<Token> tokens;   //!< The tokens used during the program.
+        sc::vector<Token> tokens;   //!< The tokens used during the program.
         Parser::required_int_type final_value; //!< The final value of the expression that was calculated.
 };
 

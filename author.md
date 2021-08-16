@@ -10,7 +10,7 @@
 - [X] Tratar erros
 - [X] Modelar uma classe (BaresManager?)
 - [X] Documentação
-- [ ] Implementar itens extras (pilha, filha, vector...)
+- [X] Implementar itens extras (pilha, filha, vector...)
 - [X] Colocar exemplo de teste do pdf no data/
 
 # Indique quais itens da avaliação foram realizados
@@ -25,7 +25,7 @@
 
 - [ ] **Extra**: utilizou pilha feito pelos autores
 - [ ] **Extra**: utilizou fila feito pelos autores
-- [ ] **Extra**: utilizou vector feito pelos autores
+- [X] **Extra**: utilizou vector feito pelos autores
 
 # Compiling and Runnig
 

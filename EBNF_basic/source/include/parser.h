@@ -3,7 +3,6 @@
 
 #include <iostream> // cout, cin
 #include <iterator> // std::distance()
-#include <vector>   // std::vector
 #include <sstream>  // std::istringstream
 #include <cstddef>  // std::ptrdiff_t
 #include <limits>   // std::numeric_limits, para validar a faixa de um inteiro.
@@ -15,6 +14,7 @@
 #include <cstdlib>
 #include <cstring>
 
+#include "../lib/vector.h" // class vector
 #include "token.h"  // struct Token.
 
 /// This class represents a parser that **validates** and **tokenizes** an expression.
@@ -75,7 +75,7 @@ class Parser
         /// Parses and tokenizes an input source expression.  Return the result as a struct.
         ResultType parse_and_tokenize( std::string e_ );
         /// Retrieves the list of tokens created during the partins process.
-        std::vector< Token > get_tokens( void ) const;
+        sc::vector< Token > get_tokens( void ) const;
 
         //==== Special methods
         /// Default constructor
@@ -110,7 +110,7 @@ class Parser
         std::string m_expr;                     //!< The source expression to be parsed
         std::string::iterator m_it_curr_symb;   //!< Pointer to the current char inside the expression.
         std::string::iterator m_begin_token;    //!< Pointer to the beginning of the current candidate token.
-        std::vector<Token> m_tk_list;           //!< Resulting list of tokens extracted from the expression.
+        sc::vector<Token> m_tk_list;           //!< Resulting list of tokens extracted from the expression.
         ResultType m_result;                    //!< The result for the current expression (either error of OK).
 
         //=== Support parser methods.

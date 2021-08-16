@@ -274,6 +274,26 @@ namespace sc {
                 m_storage[0] = value;
                 m_end++;
             };
+
+            /**
+             * @brief Inserts an element in the last position of the vector
+             */
+            void emplace_back( T value ) {
+                // Verificar se ha espaco para novo elemento.
+                if (m_end >= m_capacity) {
+                    if (m_capacity == 0) m_capacity++;
+                    else m_capacity *= 2;
+                    std::unique_ptr<T[]> new_storage {new T[m_capacity]};
+                    // Copies values of the vector to the new storage
+                    std::copy(begin(), end(), new_storage.get());
+
+                    m_storage = std::move(new_storage);
+                }
+                // Realizar a insercao de fato.
+                m_storage[m_end] = value;
+                m_end++;
+            }
+
             /**
              * @brief Inserts an element in the last position of the vector
              */

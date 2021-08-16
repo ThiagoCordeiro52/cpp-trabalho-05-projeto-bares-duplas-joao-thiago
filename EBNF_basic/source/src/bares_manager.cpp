@@ -1,11 +1,11 @@
 #include <iostream>
 #include <iomanip>
-#include <vector>
+#include "../lib/vector.h"
 
 #include "../include/bares_manager.h"
 
 /// List of expressions to evaluate and tokenize.
-std::vector<std::string> expressions = {
+sc::vector<std::string> expressions = {
     "4 + 03",
     "10",
     "    12    +    4   8",
@@ -81,7 +81,7 @@ int BaresManager::prec(std::string c) {
 /// to postfix expression
 void BaresManager::infix_to_postfix(void) {
     std::stack<Token> st; // For stack operations
-    std::vector<Token> pf_tk_list;
+    sc::vector<Token> pf_tk_list;
 
     for (size_t i{0}; i < tokens.size(); i++) {
         Token c = tokens[i];

@@ -334,7 +334,7 @@ Parser::ResultType::size_type Parser::token_location(void) {
  * This method should be called in the cliente code **after** tha parser has
  * returned successfuly.
  */
-std::vector< Token >
+sc::vector< Token >
 Parser::get_tokens( void ) const {
     return m_tk_list;
 }
