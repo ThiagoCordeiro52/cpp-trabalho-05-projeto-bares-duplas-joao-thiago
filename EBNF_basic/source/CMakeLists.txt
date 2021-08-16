@@ -11,5 +11,6 @@ include_directories("src"
                     "include")
 add_executable(bares
                "src/main.cpp"
-               "src/parser.cpp")
+               "src/parser.cpp"
+               "src/bares_manager.cpp")
 target_compile_features( bares PUBLIC cxx_std_17 )

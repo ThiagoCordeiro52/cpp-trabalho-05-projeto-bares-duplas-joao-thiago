@@ -7,11 +7,11 @@
 # TODO dos autores
 
 - [X] Implementar os parênteses
-- [ ] Tratar erros
-- [ ] Modelar uma classe (BaresManager?)
+- [X] Tratar erros
+- [X] Modelar uma classe (BaresManager?)
 - [ ] Documentação
 - [ ] Implementar itens extras (pilha, filha, vector...)
-- [ ] Colocar exemplo de teste do pdf no data/
+- [X] Colocar exemplo de teste do pdf no data/
 
 # Indique quais itens da avaliação foram realizados
 
@@ -19,8 +19,8 @@
 - [X] Converte corretamente expressões do formato infixo para posfixo (15 pontos)
 - [X] Trata corretamente o uso de parênteses e `-` unário (5 pontos)
 - [X] Avalia corretamente expressão no formato posfixo (15 créditos)
-- [ ] Detecta corretamente o conjunto de erros solicitados (20 créditos)
-- [ ] Gera a saída conforma solicitado (15 créditos)
+- [X] Detecta corretamente o conjunto de erros solicitados (20 créditos)
+- [X] Gera a saída conforma solicitado (15 créditos)
 - [X] Código é organizado em classes (10 créditos)
 
 - [ ] **Extra**: utilizou pilha feito pelos autores

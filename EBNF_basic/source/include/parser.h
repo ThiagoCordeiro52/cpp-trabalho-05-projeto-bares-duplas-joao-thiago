@@ -9,6 +9,11 @@
 #include <limits>   // std::numeric_limits, para validar a faixa de um inteiro.
 #include <algorithm>// std::copy, para copiar substrings.
 #include <cctype>   // std::isspace()
+#include <iterator>
+#include <algorithm>
+#include <stack>
+#include <cstdlib>
+#include <cstring>
 
 #include "token.h"  // struct Token.
 

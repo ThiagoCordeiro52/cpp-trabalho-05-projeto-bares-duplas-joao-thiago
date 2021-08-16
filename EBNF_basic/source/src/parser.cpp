@@ -1,10 +1,5 @@
 #include "../include/parser.h"
 #include "../lib/stack.h"
-#include <iterator>
-#include <algorithm>
-#include <stack>
-#include <cstdlib>
-#include <cstring>
 
 /// Converts the input character c_ into its corresponding terminal symbol code.
 Parser::terminal_symbol_t  Parser::lexer( char c_ ) const {
@@ -180,11 +175,14 @@ bool Parser::term( void ) {
     else if ( accept( Parser::terminal_symbol_t::TS_OPEN_PARENTHESES ) ) {
         // Add a "(" to token list.
         m_tk_list.emplace_back( Token{ "(", Token::token_t::OPEN_PARENTHESES } );
-        // Go to the next symbol.
+        // Go to the next symbol and store the beginning of the term.
         skip_ws();
+        begin_token();
         // Check if it is a expression.
         if ( expression() ) {
+            // Go to the next symbol and store the beginning of the term.
             skip_ws();
+            begin_token();
             // And check if close the parentheses.
             if ( accept( Parser::terminal_symbol_t::TS_CLOSE_PARENTHESES ) ) {
                 m_tk_list.emplace_back( Token{ ")", Token::token_t::CLOSE_PARENTHESES } );
@@ -339,157 +337,6 @@ Parser::ResultType::size_type Parser::token_location(void) {
 std::vector< Token >
 Parser::get_tokens( void ) const {
     return m_tk_list;
-}
-
-// Function to return precedence of operators
-int Parser::prec(std::string c) {
-    if (c == "^")
-        return 3;
-    else if (c == "/" || c == "*" || c == "%")
-        return 2;
-    else if (c == "+" || c == "-")
-        return 1;
-    else
-        return -1;
-}
-
-// The main function to convert infix expression
-// to postfix expression
-void Parser::infixToPostfix(void) {
-    std::stack<Token> st; // For stack operations, we are using C++ built in stack
-    // std::string result;
-    std::vector<Token> pf_tk_list;
-
-    for (size_t i{0}; i < m_tk_list.size(); i++) {
-        Token c = m_tk_list[i];
-
-        // If the scanned character is
-        // an operand, add it to output string.
-        if (c.type == Token::token_t::OPERAND)
-            pf_tk_list.push_back(c);
-            // result += c.value;
-
-        // If the scanned character is an
-        // ‘(‘, push it to the stack.
-        else if (c.type == Token::token_t::OPEN_PARENTHESES)
-            st.push(c);
-
-        // If the scanned character is an ‘)’,
-        // pop and to output string from the stack
-        // until an ‘(‘ is encountered.
-        else if (c.type == Token::token_t::CLOSE_PARENTHESES) {
-            while (st.top().type != Token::token_t::OPEN_PARENTHESES)
-            {
-                pf_tk_list.push_back(st.top());
-                // result += st.top().value;
-                st.pop();
-            }
-            st.pop();
-        }
-
-        //If an operator is scanned
-        else {
-            while (not st.empty() and prec(m_tk_list[i].value) <= prec(st.top().value)) {
-                pf_tk_list.push_back(st.top());
-                // result += st.top().value;
-                st.pop();
-            }
-            st.push(c);
-        }
-    }
-
-    // Pop all the remaining elements from the stack
-    while (not st.empty()) {
-        pf_tk_list.push_back(st.top());
-        // result += st.top().value;
-        st.pop();
-    }
-
-    m_tk_list = pf_tk_list;
-
-    // std::cout << result << std::endl;
-}
-
-// Function that calculates the postfix expression
-Parser::ResultType Parser::calculate(void) {
-    std::stack<input_int_type> st; // The stack to store the operands.
-    input_int_type result{0}; // The result of expression;
-
-    // Travels the tokens to calculate the expression.
-    for (size_t i{0}; i < m_tk_list.size(); i++) {
-        Token c = m_tk_list[i];
-        // transform std::string to char[]
-        // to use atoll and switch
-        size_t sz = c.value.length();
-        // declaring character array
-        char c_value[sz + 1];
-        // copying the contents of the
-        // string to char array
-        std::strcpy(c_value, c.value.c_str());
-
-        // If it is an operand, transform in int and push on the stack.
-        if (c.type == Token::token_t::OPERAND) {
-            // transform in int and push on the stack.
-            input_int_type value = std::atoll(c_value);
-            st.push(value);
-        }
-        // If it is an operator, pop twice on stack and calculate the expression.
-        else {
-            // Take from stack the two values that will be calculated.
-            input_int_type second_operand = st.top();
-            st.pop();
-            input_int_type first_operand = st.top();
-            st.pop();
-            // To avoid special cases of operations with 0.
-            if ( second_operand == 0 and (c_value[0] == '/' or c_value[0] == '%') ) {
-                m_result = ResultType{ ResultType::DIVISION_BY_ZERO };
-            }
-            else {
-                // Decide the operation that will be made.
-                switch (c_value[0]) {
-                    case '+':  result = first_operand + second_operand; break;
-                    case '-':  result = first_operand - second_operand; break;
-                    case '*':  result = first_operand * second_operand; break;
-                    case '/':  result = first_operand / second_operand; break;
-                    case '%':  result = first_operand % second_operand; break;
-                    case '^':
-                        // Calculate the exception of x^0 = 1
-                        if (second_operand == 0) {
-                            result = 1;
-                        }
-                        else {
-                            input_int_type expo = first_operand;
-                            while (second_operand != 1) {
-                                expo *= first_operand;
-                                second_operand--;
-                            }
-                            result = expo;
-                        }
-                }
-            }
-            // Insert the result on the top of stack.
-            st.push(result);
-        }
-    }
-    // Case of one operand is passed.
-    if (st.size() == 1) {
-        result = st.top();
-        st.pop();
-    }
-    
-    required_int_type final_result{0};
-    // We calculate the result, just know if it is within the range (overflow occurred).
-    if ( result < std::numeric_limits< required_int_type >::min() or
-         result > std::numeric_limits< required_int_type >::max() ) {
-        // Overflow occurred, report error.
-        m_result = ResultType{ ResultType::OVERFLOW_ERROR };
-    }
-    else {
-        final_result = result;
-    }
-    std::cout << "Result: " << final_result << std::endl;
-
-    return m_result;
 }
 
 //==========================[ End of parse.cpp ]==========================//
