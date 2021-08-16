@@ -33,31 +33,31 @@ void BaresManager::print_error_msg( const Parser::ResultType & result, const std
     error_indicator[result.at_col] = '^';
     switch ( result.type ) {
         case Parser::ResultType::UNEXPECTED_END_OF_EXPRESSION:
-            std::cout << ">>> Unexpected end of input at column (" << result.at_col+1 << ")!\n";
+            std::cout << "Unexpected end of input at column (" << result.at_col+1 << ")!\n";
             break;
         case Parser::ResultType::ILL_FORMED_INTEGER:
-            std::cout << ">>> Ill formed integer at column (" << result.at_col+1 << ")!\n";
+            std::cout << "Ill formed integer at column (" << result.at_col+1 << ")!\n";
             break;
         case Parser::ResultType::MISSING_TERM:
-            std::cout << ">>> Missing <term> at column (" << result.at_col+1 << ")!\n";
+            std::cout << "Missing <term> at column (" << result.at_col+1 << ")!\n";
             break;
         case Parser::ResultType::EXTRANEOUS_SYMBOL:
-            std::cout << ">>> Extraneous symbol after valid expression found at column (" << result.at_col+1 << ")!\n";
+            std::cout << "Extraneous symbol after valid expression found at column (" << result.at_col+1 << ")!\n";
             break;
         case Parser::ResultType::INTEGER_OUT_OF_RANGE:
-            std::cout << ">>> Integer constant out of range beginning at column (" << result.at_col+1 << ")!\n";
+            std::cout << "Integer constant out of range beginning at column (" << result.at_col+1 << ")!\n";
             break;
         case Parser::ResultType::MISSING_CLOSING:
-            std::cout << ">>> Missing closing \")\" at column (" << result.at_col+1 << ")!\n";
+            std::cout << "Missing closing \")\" at column (" << result.at_col+1 << ")!\n";
             break;
         case Parser::ResultType::DIVISION_BY_ZERO:
-            std::cout << ">>> Division by zero!\n";
+            std::cout << "Division by zero!\n";
             break;
         case Parser::ResultType::OVERFLOW_ERROR:
-            std::cout << ">>> Numeric overflow error!\n";
+            std::cout << "Numeric overflow error!\n";
             break;
         default:
-            std::cout << ">>> Unhandled error found!\n";
+            std::cout << "Unhandled error found!\n";
             break;
     }
     //? Indicate the column of error.
@@ -269,7 +269,7 @@ void BaresManager::parse_and_compute(std::string expr) {
         if ( status.type != Parser::ResultType::OK )
             print_error_msg( status, expr );
         else
-            std::cout << "Result: " << final_value << std::endl;
+            std::cout << final_value << std::endl;
     }
     // std::cout << "\n>>> Normal exiting...\n";
 }
