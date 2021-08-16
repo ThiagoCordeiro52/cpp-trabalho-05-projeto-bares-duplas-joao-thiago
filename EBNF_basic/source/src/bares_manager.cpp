@@ -1,7 +1,7 @@
 #include <iostream>
 #include <iomanip>
-#include "../lib/vector.h"
 
+#include "../lib/vector.h"
 #include "../include/bares_manager.h"
 
 /// List of expressions to evaluate and tokenize.
