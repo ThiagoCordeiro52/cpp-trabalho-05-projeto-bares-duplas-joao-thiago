@@ -10,11 +10,12 @@
 #include <cctype>   // std::isspace()
 #include <iterator>
 #include <algorithm>
-#include <stack>
+// #include <stack>
 #include <cstdlib>
 #include <cstring>
 
 #include "../lib/vector.h" // class vector
+#include "../lib/stack.h" //class stack
 #include "token.h"  // struct Token.
 
 /// This class represents a parser that **validates** and **tokenizes** an expression.

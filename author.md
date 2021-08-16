@@ -23,7 +23,7 @@
 - [X] Gera a saída conforma solicitado (15 créditos)
 - [X] Código é organizado em classes (10 créditos)
 
-- [ ] **Extra**: utilizou pilha feito pelos autores
+- [X] **Extra**: utilizou pilha feito pelos autores
 - [ ] **Extra**: utilizou fila feito pelos autores
 - [X] **Extra**: utilizou vector feito pelos autores
 

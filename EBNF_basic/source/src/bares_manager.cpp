@@ -80,7 +80,7 @@ int BaresManager::prec(std::string c) {
 /// The main function to convert infix expression
 /// to postfix expression
 void BaresManager::infix_to_postfix(void) {
-    std::stack<Token> st; // For stack operations
+    sta::stack<Token> st; // For stack operations
     sc::vector<Token> pf_tk_list;
 
     for (size_t i{0}; i < tokens.size(); i++) {
@@ -129,7 +129,7 @@ void BaresManager::infix_to_postfix(void) {
 
 /// Function that calculates the postfix expression
 void BaresManager::calculate(void) {
-    std::stack<Parser::input_int_type> st; // The stack to store the operands.
+    sta::stack<Parser::input_int_type> st; // The stack to store the operands.
     Parser::input_int_type result{0}; // The result of expression;
 
     // Travels the tokens to calculate the expression.
