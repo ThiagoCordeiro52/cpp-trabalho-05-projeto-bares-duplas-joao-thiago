@@ -9,7 +9,7 @@
 - [X] Implementar os parênteses
 - [X] Tratar erros
 - [X] Modelar uma classe (BaresManager?)
-- [ ] Documentação
+- [X] Documentação
 - [ ] Implementar itens extras (pilha, filha, vector...)
 - [X] Colocar exemplo de teste do pdf no data/
 
@@ -29,7 +29,7 @@
 
 # Compiling and Runnig
 
-<!-- ## Manualmente com g++
+## Manualmente com g++
 
 Para compilar e executar o programa manualmente basta digitar os seguintes comandos em seu terminal:
 
@@ -38,9 +38,10 @@ $ git clone https://github.com/selan-active-classes/trabalho-05-projeto-bares-du
 $ cd trabalho-05-projeto-bares-individual-joaoguilac/ (vai até a pasta do repositório clonado)
 $ mkdir bin (caso não tenha uma pasta para os executáveis, você deve criá-la com esse comando)
 $ cd bin/ (vá para a pasta dos executáveis criada para compilar e executar seu programa)
-$ g++ -Wall -std=c++11 -g ../source/src/bcr.cpp ../source/src/animation_mgr.cpp ../source/src/bar_chart.cpp -I../source/include -o bcr (compilar)
+$ g++ -Wall -std=c++11 -g ../EBNF_basic/source/src/main.cpp ../EBNF_basic/source/src/parser.cpp ../EBNF_basic/source/src/bares_manager.cpp -I../EBNF_basic/source/include -o bares (compilar)
 $ ./bares (executar)
-``` -->
+$ Digite a expressão a ser calculada
+```
 
 ## Cmake
 

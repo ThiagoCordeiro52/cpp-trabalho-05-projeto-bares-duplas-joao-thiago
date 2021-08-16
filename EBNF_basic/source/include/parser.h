@@ -76,12 +76,6 @@ class Parser
         ResultType parse_and_tokenize( std::string e_ );
         /// Retrieves the list of tokens created during the partins process.
         std::vector< Token > get_tokens( void ) const;
-        //! test
-        int prec(std::string c);
-        //! test
-        void infixToPostfix(void);
-        //! test. 
-        Parser::ResultType calculate(void);
 
         //==== Special methods
         /// Default constructor

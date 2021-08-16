@@ -65,7 +65,7 @@ void BaresManager::print_error_msg( const Parser::ResultType & result, const std
     // std::cout << " " << error_indicator << std::endl;
 }
 
-// Function to return precedence of operators
+/// Function to return precedence of operators
 int BaresManager::prec(std::string c) {
     if (c == "^")
         return 3;
@@ -77,9 +77,9 @@ int BaresManager::prec(std::string c) {
         return -1;
 }
 
-// The main function to convert infix expression
-// to postfix expression
-void BaresManager::infixToPostfix(void) {
+/// The main function to convert infix expression
+/// to postfix expression
+void BaresManager::infix_to_postfix(void) {
     std::stack<Token> st; // For stack operations
     std::vector<Token> pf_tk_list;
 
@@ -127,7 +127,7 @@ void BaresManager::infixToPostfix(void) {
     tokens = pf_tk_list;
 }
 
-// Function that calculates the postfix expression
+/// Function that calculates the postfix expression
 void BaresManager::calculate(void) {
     std::stack<Parser::input_int_type> st; // The stack to store the operands.
     Parser::input_int_type result{0}; // The result of expression;
@@ -159,7 +159,7 @@ void BaresManager::calculate(void) {
             st.pop();
             // To avoid special cases of operations with 0.
             if ( second_operand == 0 and (c_value[0] == '/' or c_value[0] == '%') ) {
-                m_result = Parser::ResultType{ Parser::ResultType::DIVISION_BY_ZERO };
+                status = Parser::ResultType{ Parser::ResultType::DIVISION_BY_ZERO };
             }
             else {
                 // Decide the operation that will be made.
@@ -199,16 +199,17 @@ void BaresManager::calculate(void) {
     if ( result < std::numeric_limits< Parser::required_int_type >::min() or
          result > std::numeric_limits< Parser::required_int_type >::max() ) {
         // Overflow occurred, report error.
-        m_result = Parser::ResultType{ Parser::ResultType::OVERFLOW_ERROR };
+        status = Parser::ResultType{ Parser::ResultType::OVERFLOW_ERROR };
     }
     else {
-        final_result = result;
+        final_value = result;
     }
 }
 
-void BaresManager::read_and_compute(std::string expr) {
+/// Reads a line and compute a expression.
+void BaresManager::parse_and_compute(std::string expr) {
     Parser parser; // Instancia um parser.
-    final_result = 0;
+    final_value = 0;
 
     //======================================================================
     //== Códigos para ajudar na depuração
@@ -236,13 +237,13 @@ void BaresManager::read_and_compute(std::string expr) {
     }*/
     
     //* [I] Fazer o parsing desta expressão.
-    m_result = parser.parse_and_tokenize(expr);
+    status = parser.parse_and_tokenize(expr);
     //? Preparar cabeçalho da saida.
     // std::cout << std::setfill('=') << std::setw(80) << "\n";
     // std::cout << std::setfill(' ') << ">>> Parsing \"" << expr << "\"\n";
     // Se deu pau, imprimir a mensagem adequada.
-    if ( m_result.type != Parser::ResultType::OK )
-        print_error_msg( m_result, expr );
+    if ( status.type != Parser::ResultType::OK )
+        print_error_msg( status, expr );
     else {
         // std::cout << ">>> Expression SUCCESSFULLY parsed!\n"; //? Deu certo.
         //* [II.1] Recuperar a lista de tokens no formato infixo.
@@ -254,7 +255,7 @@ void BaresManager::read_and_compute(std::string expr) {
         // std::cout << std::endl;
 
         //* [II.2] Transformar de infixo para posfixo.
-        infixToPostfix();
+        infix_to_postfix();
 
         //? [II.3] Recuperar a lista de tokens no formato posfixo.
         // std::cout << ">>> Tokens: { ";
@@ -265,10 +266,10 @@ void BaresManager::read_and_compute(std::string expr) {
 
         //* [III] Calcular a expressão pos fixa.
         calculate();
-        if ( m_result.type != Parser::ResultType::OK )
-            print_error_msg( m_result, expr );
+        if ( status.type != Parser::ResultType::OK )
+            print_error_msg( status, expr );
         else
-            std::cout << "Result: " << final_result << std::endl;
+            std::cout << "Result: " << final_value << std::endl;
     }
     // std::cout << "\n>>> Normal exiting...\n";
 }
